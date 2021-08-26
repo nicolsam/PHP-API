@@ -8,6 +8,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../bootstrap/app.php';
 
 use \App\Models\User;
+use \Exception;
 
 if(!$_GET['url']) {
     die('Variável url não existe');
@@ -16,11 +17,37 @@ if(!$_GET['url']) {
 $url = explode('/', $_GET['url']);
 
 if(!$url[0] === 'api') {
-    die('API não está sendo acessada');
+    die('A URI da API não está sendo corretamente utilizada');
 }
 
-$users = User::get(1);
+array_shift($url);
+$service =  'App\Services\\' . ucfirst($url[0]) . 'Service';
 
-echo '<pre>';
-print_r($users);
-echo '</pre>';
+array_shift($url);
+$method = strtolower($_SERVER['REQUEST_METHOD']);
+
+$data = [
+    'status' => 'failed',
+    'data' => "This user doesn't exist!"
+];
+
+try {
+    
+    $response = call_user_func_array([new $service, $method], $url);
+
+    if(!$response) {
+        echo '<pre>';
+        echo json_encode($data);
+        echo '</pre>';
+    }
+
+    $data['status'] = 'success';
+    $data['data'] = $response;
+
+    echo '<pre>';
+    echo json_encode($data);
+    echo '</pre>';
+
+} catch(Exception $error) {
+    echo 'Erro genérico' . $error; exit;
+}
