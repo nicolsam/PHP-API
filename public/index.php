@@ -28,7 +28,7 @@ $method = strtolower($_SERVER['REQUEST_METHOD']);
 
 $data = [
     'status' => 'failed',
-    'data' => "This user doesn't exist!"
+    'data' => null,
 ];
 
 try {
@@ -36,18 +36,21 @@ try {
     $response = call_user_func_array([new $service, $method], $url);
 
     if(!$response) {
+        throw new Exception("This user doesn't exist!");
+
         echo '<pre>';
         echo json_encode($data);
-        echo '</pre>';
+        echo '</pre>'; exit;
     }
 
     $data['status'] = 'success';
     $data['data'] = $response;
 
-    echo '<pre>';
     echo json_encode($data);
-    echo '</pre>';
+    exit;
 
 } catch(Exception $error) {
-    echo 'Erro genérico' . $error; exit;
+    $data['data'] = $error->getMessage();
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    exit;
 }
