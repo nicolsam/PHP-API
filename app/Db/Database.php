@@ -90,8 +90,6 @@ class Database {
         $this->NAME     = getenv('DB_NAME');
         $this->USERNAME = getenv('DB_USER');
         $this->PASSWORD = getenv('DB_PASSWORD');
-
-        echo $this->PASSWORD;
     }
 
     private function execute($query) {
