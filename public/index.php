@@ -37,11 +37,10 @@ try {
 
     if(!$response) {
         throw new Exception("This user doesn't exist!");
-
-        echo '<pre>';
-        echo json_encode($data);
-        echo '</pre>'; exit;
+        exit;
     }
+
+    http_response_code(200);
 
     $data['status'] = 'success';
     $data['data'] = $response;
@@ -50,6 +49,8 @@ try {
     exit;
 
 } catch(Exception $error) {
+    http_response_code(404);
+
     $data['data'] = $error->getMessage();
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
