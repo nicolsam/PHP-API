@@ -10,5 +10,9 @@ class User {
 
     public static function selectUser($id) {
         return (new Database(self::$table))->select($id)->fetchAll(PDO::FETCH_CLASS, self::class);
-   }
+    }
+
+    public static function selectAllUsers() {
+        return (new Database(self::$table))->selectAll()->fetchAll(PDO::FETCH_CLASS, self::class);
+    }
 }

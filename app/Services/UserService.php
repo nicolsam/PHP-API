@@ -8,7 +8,7 @@ class UserService {
 
     public function get($id = null) {
         if(!$id) {
-            User::selectAll();
+            User::selectAllUsers();
         }
 
         return User::selectUser($id);

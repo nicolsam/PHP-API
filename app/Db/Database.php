@@ -115,4 +115,10 @@ class Database {
         return $this->execute($query);
     }
 
+    public function selectAll() {
+        $query = 'SELECT * FROM '. $this->table;
+
+        return $this->execute($query);
+    }
+
 }
