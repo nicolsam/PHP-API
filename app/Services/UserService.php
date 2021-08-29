@@ -15,7 +15,9 @@ class UserService {
     }
 
     public function post() {
-        
+        $data = $_POST;
+        print_r($data);
+        return User::insert($data);
     }
 
     public function update() {
