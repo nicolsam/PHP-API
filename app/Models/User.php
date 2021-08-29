@@ -6,7 +6,7 @@ use \App\Db\Database;
 use \PDO;
 
 class User {
-    private static $id;
+    private static $userId;
 
     private static $table = 'users';
 
@@ -39,7 +39,7 @@ class User {
     public static function insert($data) {
         $obDatabase = new Database(self::$table);
 
-        self::$id = $obDatabase->insert($data);
+        self::$userId = $obDatabase->insert($data);
 
         return true;
     }
