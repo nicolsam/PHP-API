@@ -92,10 +92,10 @@ class Database {
         $this->PASSWORD = getenv('DB_PASSWORD');
     }
 
-    private function execute($query) {
+    private function execute($query, $params = []) {
         try {
             $statement = $this->connection->prepare($query);
-            $statement->execute();
+            $statement->execute($params);
 
             return $statement;
 
@@ -119,6 +119,17 @@ class Database {
         $query = 'SELECT * FROM '. $this->table;
 
         return $this->execute($query);
+    }
+
+    public function insert($data) {
+        $fields = array_keys($data);
+        $binds = array_pad([], count($fields), '?');
+
+        $query = "INSERT INTO " . $this->table . " (". implode(',', $fields). ") VALUES (". implode(',', $binds) . ")";
+
+        $this->execute($query, array_values($data));
+
+        return $this->connection->lastInsertId();
     }
 
 }
